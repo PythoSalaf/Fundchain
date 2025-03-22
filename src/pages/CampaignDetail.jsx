@@ -1,11 +1,28 @@
-import { Bus, Profile } from "../assets";
+import { useContext, useState } from "react";
+import { Profile } from "../assets";
 import { CampaignData } from "../components/DummyData";
 import { CampaignCard, Progressbar } from "../components";
 import { useParams } from "react-router";
-
+import { CrowdFundingContext } from "../Context/CrowdFundingContext";
 const CampaignDetail = () => {
+  const [amount, setAmount] = useState("");
+  const { donateToCampaign } = useContext(CrowdFundingContext);
   const { id } = useParams();
   const campaign = CampaignData.find((e) => e.id === parseInt(id));
+  const handleDonate = async (e) => {
+    e.preventDefault();
+    if (!amount || amount < 0) {
+      alert("Please Enter valid amount");
+      return;
+    }
+    try {
+      await donateToCampaign(id, amount);
+      alert("Donation Successful");
+    } catch (error) {
+      console.log("Donation Error", error);
+      Alert("Donation Failed! Please try again");
+    }
+  };
   return (
     <div className="pt-[4.5rem] pb-3 text-white w-full">
       <div className="w-[94%] md:w-[96%] mx-auto">
@@ -87,9 +104,11 @@ const CampaignDetail = () => {
                 <h3 className="bg-gradient-to-r from-blue-500 via-pink-500 to-yellow-400 bg-clip-text leading-14 text-transparent text-center text-lg md:text-xl font-semibold capitalize">
                   Pledge without reward
                 </h3>
-                <form className="w-[85%] mx-auto">
+                <form className="w-[85%] mx-auto" onSubmit={handleDonate}>
                   <input
                     type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
                     placeholder="Fund amount"
                     className="bg-black text-white w-full h-9 px-2 rounded-xl"
                   />
@@ -104,7 +123,10 @@ const CampaignDetail = () => {
                       </p>
                     </div>
                   </div>
-                  <button className="mt-2 mb-4 py-1.5 cursor-pointer text-black w-full linear rounded-xl text-lg capitalize font-semibold">
+                  <button
+                    type="submit"
+                    className="mt-2 mb-4 py-1.5 cursor-pointer text-black w-full linear rounded-xl text-lg capitalize font-semibold"
+                  >
                     {" "}
                     fund campaign
                   </button>

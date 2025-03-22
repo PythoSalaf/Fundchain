@@ -48,7 +48,7 @@ const CreateCampaign = () => {
     <div className="pt-[4rem]  w-full">
       <div className="w-[96%] bg-white shadow-2xl py-4 md:w-[94%] lg:w-[90%] mx-auto">
         <div className="w-[94%] mx-auto py-2">
-          <div className="bg-black w-[40%] md:w-[25%] py-1.5 mx-auto text-xl rounded-2xl md:text-2xl flex items-center justify-center">
+          <div className="bg-black w-[80%] md:w-[45%] lg:w-[30%] py-1.5 mx-auto text-xl rounded-2xl md:text-2xl flex items-center justify-center">
             <h3 className="text-white">Start a Campagin</h3>
           </div>
           <form onSubmit={handleSubmit}>
@@ -88,7 +88,7 @@ const CreateCampaign = () => {
                 onChange={(e) => handleFieldChange("description", e)}
               ></textarea>
             </div>
-            <div className="bg-blue-500 w-full rounded-2xl">
+            <div className="bg-black text-white w-full rounded-2xl">
               <div className="w-[94%] mx-auto py-4">
                 <h3 className="">You'll get 100% of the raised amount</h3>
               </div>
@@ -132,7 +132,7 @@ const CreateCampaign = () => {
               />
             </div>
             <div className="flex items-center justify-center w-full">
-              <button className="linear cursor-pointer font-semibold text-base md:text-lg capitalize px-3 py-1.5 rounded-2xl">
+              <button className="bg-black text-white cursor-pointer font-semibold text-base md:text-lg capitalize px-3 py-1.5 rounded-2xl">
                 submit new campaign
               </button>
             </div>

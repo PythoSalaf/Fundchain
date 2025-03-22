@@ -1,27 +1,36 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { MdMenu } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { Logo } from "../assets";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { CrowdFundingContext } from "../Context/CrowdFundingContext";
 
 const Topbar = () => {
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
-  const { connectWallet, account, isConnected } =
+  const { connectWallet, account, isConnected, disconnectWallet } =
     useContext(CrowdFundingContext);
+  const truncateAddress = (address, startLength = 8, endLength = 5) => {
+    if (!address) return "";
+    return `${address.slice(0, startLength)}...${address.slice(-endLength)}`;
+  };
+  const handleDisconnect = () => {
+    disconnectWallet();
+    setProfileOpen(!profileOpen);
+  };
 
   return (
-    <div className="w-full ">
-      <div className="w-[94%] md:w-[98%] mx-auto flex items-center justify-between">
+    <div className="w-full relative ">
+      <div className="w-[94%] md:w-[98%] mx-auto relative flex items-center justify-between">
         <div className="w-full flex items-center gap-x-3">
           {/* <h2 className=""></h2> */}
-          <div className="">
+          <Link to="/" className="">
             <img
               src={Logo}
               alt=""
               className="w-[50px] h-[50px] cursor-pointer"
             />
-          </div>
+          </Link>
         </div>
         <div className="w-full hidden md:flex items-center justify-center">
           <input
@@ -46,13 +55,31 @@ const Topbar = () => {
               Connect Wallet
             </button>
           )}
-          <div className=" text-white p-1 cursor-pointer rounded-full border-2 border-[#55286FS]">
-            <FaRegUser className="size-4.5" />
-          </div>
+          {account && (
+            <div
+              className=" text-white p-1 cursor-pointer rounded-full border-2 border-[#55286FS]"
+              onClick={() => setProfileOpen(!profileOpen)}
+            >
+              <FaRegUser className="size-4.5" />
+            </div>
+          )}
         </div>
         <div className="md:hidden border-2 border-[#55286F] text-white p-1 cursor-pointer rounded-xl flex items-center justify-center">
           <MdMenu className="h-6 w-7" />
         </div>
+        {profileOpen && (
+          <div className="absolute top-[50px] shadow right-0 bg-white w-56 py-3 p-2 rounded-xl">
+            <p className="text-center text-lg pb-2">
+              {truncateAddress(account)}
+            </p>
+            <button
+              className="w-full bg-black py-1 rounded-xl cursor-pointer text-white"
+              onClick={handleDisconnect}
+            >
+              Disconnect Wallet
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
